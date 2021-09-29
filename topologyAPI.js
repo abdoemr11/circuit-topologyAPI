@@ -3,7 +3,6 @@ const jsonIO = require("./jsonio");
 
 
 
-let myPool = new topPool.TopPool();
 /***********************************************************
  * readJSON():
  * - Read Topology from a given JSON file and store it in 
@@ -64,7 +63,7 @@ function deleteTopology(topId){
  * - retrive all topologies from the memory pool
  * - infrom the user if the pool is empty and return -1
 ***********************************************************/
-function queryTopolgies(){
+function queryTopologies(){
 	let tops= myPool.showAllTop();
 	if(Array.isArray(tops) && tops.length)
 		return tops;
@@ -84,7 +83,7 @@ function queryDevices(topId){
 	return -1;
 }
 /***********************************************************
- * queryDevicesWithNetListNode():
+ * querydeviceswithnetlistnode():
  * - retrive all deviced that are connected to a certain 
  *   node in a given topology
  * - return -1 otherwise
@@ -96,7 +95,23 @@ function queryDevicesWithNetListNode(topId, nodeId){
 	console.log("Couldn't retrive devices from topology with ID : ", topId, " and node id ", nodeId);
 	return -1;
 }
-	
 
-readJSON("./topologies/topology2.json");
-console.log(myPool.showAllTop());
+/***********************************************************
+ * initMemoryPool:
+ * - initialize the memory pool object must be called before
+ *   any other function in the API
+***********************************************************/
+function initMemoryPool(){
+	let myPool = new topPool.TopPool();
+}
+/*********** Export the API functions **********************/
+module.exports = {
+	initMemoryPool,
+	readJSON,
+	writeJSON, 
+	queryTopologies,
+	queryDevices, 
+	queryDevicesWithNetListNode,
+	deleteTopology
+
+};
