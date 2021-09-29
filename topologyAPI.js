@@ -1,7 +1,23 @@
 const topPool = require("./topologypool");
 const jsonIO = require("./jsonio");
-
-
+/**********************************************************
+ * isValidTop v1.0:
+ * - check if the givin topology is a valid
+ * - check if it has topology Id
+ * -                 - component
+ *                   - component.id
+**********************************************************/
+function isValidTop(top){
+	if(!top.hasOwnProperty("id"))
+		return false;
+	else if (!top.hasOwnProperty("components"))
+		return false;
+	for(let comp of top.components){
+		if(!comp.hasOwnProperty("id"))
+			return false;
+	}
+	return true;
+}
 
 /***********************************************************
  * readJSON():
@@ -22,6 +38,8 @@ function readJSON(jsonFile)
 		console.log("Error! Can't read the Json file check name and format then try again");
 		return false;
 	}
+	if(!isValidTop(top))
+		return false;
 	//if read json file successfully add it to the pool
 	myPool.addTop(top);
 	return true;
@@ -97,16 +115,13 @@ function queryDevicesWithNetListNode(topId, nodeId){
 }
 
 /***********************************************************
- * initMemoryPool:
- * - initialize the memory pool object must be called before
- *   any other function in the API
+ * - initialize the memory pool object 
 ***********************************************************/
-function initMemoryPool(){
-	let myPool = new topPool.TopPool();
-}
+let myPool = new topPool.TopPool();
+
 /*********** Export the API functions **********************/
 module.exports = {
-	initMemoryPool,
+	myPool,
 	readJSON,
 	writeJSON, 
 	queryTopologies,

@@ -21,6 +21,7 @@ class TopPool {
  * v1.1 => check topology to see if it's already on the pool
  * if exist then overwite the current one
  * This step to assure that id is unique key
+ * Note : topoloy must be valid toplogy
 *******************************************************************/
 	addTop(top)
 	{
@@ -46,7 +47,7 @@ class TopPool {
 		  ++i;
 		}
 	  }
-		return this.isTopExist(topId));
+		return this.isTopExist(topId);
 	}
 /*******************************************************************
  * queryTop v1.0
