@@ -1,5 +1,3 @@
-const jsonio = require("./jsonio")
-let top1 = jsonio.jsonReader("./topologies/topology.json")
 /******************************************************************
  * TopPool: 
  * Topoloies Pool container
@@ -33,9 +31,10 @@ class TopPool {
 			this.topologies[index] = top;
 	}
 /*******************************************************************
- * removeTop v1.0: 
+ * removeTop v1.1: 
  * remove the givin topologyies based on the given id
  * topId must be string
+ * v1.1: return index of the top -1 otherwise
 *******************************************************************/
 	removeTop(topId) {
 	  let i = 0;
@@ -47,6 +46,7 @@ class TopPool {
 		  ++i;
 		}
 	  }
+		return this.isTopExist(topId));
 	}
 /*******************************************************************
  * queryTop v1.0
@@ -61,36 +61,46 @@ class TopPool {
 /*******************************************************************
  * showAllTop v2.0
  * return array of topologies id that reside in the memory
+ * v2.0: return array of topologies
 *******************************************************************/
 	showAllTop(){
 		let topsId = [];
+		let topsList = []
 		for(let top of this.topologies)	
 		{
-			topsId.push(top.id)	
+			topsId.push(top.id)	;
+			topsList.push(top);
+
 		}
-		return topsId;
+		return topsList;
+		//return topsId;
 	}
 /*******************************************************************
- * showCompInTop v1.1
+ * showCompInTop v1.2
  * Given topology id it will return array of components
  * containing components id and type
  * v1.1 if the topology not in the pool return -1
+ * v1.2 return component object not just id
 *******************************************************************/
 	showCompInTop(topId){
 		let compId = [];
+		let comps = [];
 		let index = 0;
 		if((index = this.isTopExist(topId)) == -1)
 			return -1;
 		for(let comp of this.topologies[index].components)
 		{
-			compId.push(comp.id);
+			comps.push(comp);
+			//compId.push(comp.id);
 		}
-		return compId;
+		return comps;
+		//return compId;
 	}
 /*******************************************************************
- * showDevicesConectToNet v1.0
+ * showDevicesConectToNet v1.1
  * given topologyId and node return all devices that are attached
  * to this node
+ * v1.1 change it to return devices not just their id
 *******************************************************************/
 	showDevicesConectToNet(topId, node){
 		//check if the topology are in the pool
@@ -101,19 +111,20 @@ class TopPool {
 			return;
 		}
 		let attachedDevicesId = [];
+		let attachedDevices = [];
 		for(let comp of this.topologies[index].components)
 		{
 			for(let terminal in comp.netlist)
 			{
 				console.log(terminal)
 				if(comp.netlist.hasOwnProperty(terminal)&&comp.netlist[terminal] == node){
-					attachedDevicesId.push(comp.id);
+					attachedDevices.push(comp);
 					break;
 				}
 			}
 		}
 		//check if there are connected deviced or not 
-		return attachedDevicesId;
+		return attachedDevices;
 	}
 /*******************************************************************
  * countTop v1.0: 
@@ -138,7 +149,10 @@ class TopPool {
 		return -1;
 	}
 }
-let myPool = new TopPool();
+module.exports = {
+	TopPool	
+};
+/*let myPool = new TopPool();
 myPool.addTop(top1);
 console.log(myPool.showAllTop());
 console.log(myPool.showCompInTop("top1"));
