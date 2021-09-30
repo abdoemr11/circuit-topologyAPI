@@ -53,14 +53,15 @@ function readJSON(jsonFile)
 ***********************************************************/
 function writeJSON(topId, fileName){
 	let top = myPool.queryTop(topId);
+	console.log(top.id);
 	//check if it retrived the topology correctly
 	if(!(top.id == topId))
 	{
 		console.log("Couldn't retrive the topology from the memory. Check that the topology id is correct and then try again");
 		return false;
 	}	
-	jsonIO.jsonWriter(top, fileName)
-	return true;
+	let writeCondition = jsonIO.jsonWriter(fileName, top);
+	return writeCondition;
 }
 /***********************************************************
  * deleteTopology():
@@ -107,7 +108,7 @@ function queryDevices(topId){
  * - return -1 otherwise
 ***********************************************************/
 function queryDevicesWithNetListNode(topId, nodeId){
-	let devices = myPool.showDevicesConectToNet(topI, nodeId)	;
+	let devices = myPool.showDevicesConectToNet(topId, nodeId)	;
 	if(Array.isArray(devices) && devices.length)
 		return devices;
 	console.log("Couldn't retrive devices from topology with ID : ", topId, " and node id ", nodeId);

@@ -27,7 +27,7 @@ class TopPool {
 	{
 		let index = 0;
 		if((index = this.isTopExist(top.id))== -1)
-			this.topologies.push(top)	
+			this.topologies.push(top);
 		else
 			this.topologies[index] = top;
 	}
@@ -39,6 +39,7 @@ class TopPool {
 *******************************************************************/
 	removeTop(topId) {
 	  let i = 0;
+		let index = this.isTopExist(topId);
 	  while (i < this.topologies.length) {
 		if (this.topologies[i].id === topId) {
 			console.log("removing topology with topology id = ", topId );
@@ -47,7 +48,8 @@ class TopPool {
 		  ++i;
 		}
 	  }
-		return this.isTopExist(topId);
+		//
+		return index;
 	}
 /*******************************************************************
  * queryTop v1.0
@@ -66,7 +68,7 @@ class TopPool {
 *******************************************************************/
 	showAllTop(){
 		let topsId = [];
-		let topsList = []
+		let topsList = [];
 		for(let top of this.topologies)	
 		{
 			topsId.push(top.id)	;
@@ -117,7 +119,7 @@ class TopPool {
 		{
 			for(let terminal in comp.netlist)
 			{
-				console.log(terminal)
+				console.log(terminal);
 				if(comp.netlist.hasOwnProperty(terminal)&&comp.netlist[terminal] == node){
 					attachedDevices.push(comp);
 					break;

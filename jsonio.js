@@ -22,13 +22,15 @@ function jsonWriter(filePath, jsonObject){
 		//console.log("hi ",jsonData);
 		fs.writeFileSync(filePath,jsonData);
 		//fs.writeFileSync(filePath,jsonObject);
+		return true;
 	}
 	catch(err){
 		console.log(err);
+		return false;
 	}
 }
 module.exports = {
 	jsonReader, 
 	jsonWriter
-}
+};
 
